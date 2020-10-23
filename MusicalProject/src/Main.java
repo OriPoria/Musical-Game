@@ -5,7 +5,7 @@ import gui.GUI;
 //https://courses.cs.washington.edu/courses/cse331/13sp/lectures/lect23-graphics.pdf
 public class Main {
 	public static void main(String [] args) {
-		System.out.println("welcome!");
+		System.out.println("Welcome to the musical game!");
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

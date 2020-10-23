@@ -18,7 +18,12 @@ public class MainMenu extends JPanel {
         title.setFont(new java.awt.Font("David", 1, 40));
         title.setForeground(Color.white);
 		add(title);
-		add(new CenterMenu(this));
+		try {
+			add(new CenterMenu(this));
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 
 	}
 

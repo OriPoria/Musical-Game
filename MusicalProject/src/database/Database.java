@@ -47,7 +47,6 @@ public class Database {
 			User user = new User();
 			user.setName(str1);
 			user.setTopScore(id);
-			System.out.println("return user");
 			return user;
 			
 
@@ -57,7 +56,7 @@ public class Database {
 			return null;
 
 		} finally {
-			System.out.println("Get completed");
+			System.out.println("Get user completed");
 		}
 	}
 	

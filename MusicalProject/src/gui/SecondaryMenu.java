@@ -7,6 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import database.User;
+import game.LevelEngine;
 
 @SuppressWarnings("serial")
 public class SecondaryMenu extends JPanel {
@@ -46,7 +49,25 @@ public class SecondaryMenu extends JPanel {
 		add(welcome,c);
 		c.gridy = 2;
 		c.anchor = GridBagConstraints.PAGE_END;
-		add(new JButton("start a game!"), c);
+		JButton button = new JButton("start a game!");
+		JPanel wrapper = this;
+		button.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Level level = new Level();
+				LevelEngine levelEngine = new LevelEngine(level);
+				
+				PanelManager.changePanel(wrapper, level);
+				new Thread() {
+					@Override
+					public void run() {
+						levelEngine.run();
+					}
+				}.start();
+			}
+		});
+		add(button, c);
 		c.gridy = 3;
 		c.anchor = GridBagConstraints.PAGE_START;
 		add(new JButton("score table"), c);

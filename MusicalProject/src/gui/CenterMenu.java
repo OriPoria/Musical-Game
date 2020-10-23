@@ -7,11 +7,17 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
+
 
 import controller.DatabaseController;
 import database.Database;
@@ -25,7 +31,7 @@ public class CenterMenu extends JPanel {
 	private JPanel wrapper;
 	private Insets myInsets;
 	
-	public CenterMenu(JPanel w) {
+	public CenterMenu(JPanel w) throws Exception {
 		wrapper = w;
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -68,7 +74,44 @@ public class CenterMenu extends JPanel {
 		myInsets.set(10, 0, 0, 0);
 		c.insets = myInsets;
 		adminButton = new JButton("I'm adim");
+		Clip clip = AudioSystem.getClip();
+		adminButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+		            	
+                    File IS1 = new File("src\\sounds\\Do1.wav");
+                    AudioInputStream Do1 = AudioSystem.getAudioInputStream(IS1);
+              //      clip.open(Do1);
+                  //  clip.start();
+                   // clip.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				
+			}
+		});
+		
+		JButton testButton = new JButton("test");
+		testButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					clip.open();
+				} catch (LineUnavailableException e1) {
+					System.out.println(e1.getMessage());
+					e1.printStackTrace();
+				}
+				clip.start();
+				
+			}
+		});
 		add(adminButton, c);
+		c.gridy = 2;
+		add(testButton,c);
 	}
 
 }
