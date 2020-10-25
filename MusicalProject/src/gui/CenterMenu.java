@@ -22,6 +22,7 @@ import javax.swing.SwingWorker;
 import controller.DatabaseController;
 import database.Database;
 import database.User;
+import music.Music;
 
 @SuppressWarnings("serial")
 public class CenterMenu extends JPanel {
@@ -29,16 +30,14 @@ public class CenterMenu extends JPanel {
 	private JButton okButton;
 	private JButton adminButton;
 	private JPanel wrapper;
-	private Insets myInsets;
+	
 	
 	public CenterMenu(JPanel w) throws Exception {
 		wrapper = w;
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		setBackground(Color.gray);
-		myInsets = new Insets(0, 0, 0, 5);
-		c.insets = myInsets;
-		c.gridwidth = 2;
+		c.insets = new Insets(0, 0, 0, 5);
 		userNameField = new JTextField("ori", 15);
 		add(userNameField, c);
 		okButton = new JButton("ok");
@@ -66,52 +65,13 @@ public class CenterMenu extends JPanel {
 			}
 		});
 			
-
 		add(okButton);
 		c.gridy = 1;
-		c.gridx = 0;
-		c.gridwidth = 1;
-		myInsets.set(10, 0, 0, 0);
-		c.insets = myInsets;
+		c.insets = new Insets(10, 0, 0, 0);
 		adminButton = new JButton("I'm adim");
-		Clip clip = AudioSystem.getClip();
-		adminButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-		            	
-                    File IS1 = new File("src\\sounds\\Do1.wav");
-                    AudioInputStream Do1 = AudioSystem.getAudioInputStream(IS1);
-              //      clip.open(Do1);
-                  //  clip.start();
-                   // clip.close();
-				} catch (Exception e2) {
-					// TODO: handle exception
-				}
-
-				
-			}
-		});
-		
-		JButton testButton = new JButton("test");
-		testButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					clip.open();
-				} catch (LineUnavailableException e1) {
-					System.out.println(e1.getMessage());
-					e1.printStackTrace();
-				}
-				clip.start();
-				
-			}
-		});
 		add(adminButton, c);
-		c.gridy = 2;
-		add(testButton,c);
+		
+
 	}
 
 }

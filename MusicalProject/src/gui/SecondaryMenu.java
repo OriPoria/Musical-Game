@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,7 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import database.User;
+import game.Level;
+import game.Game1Factory;
+import game.GameFactory;
 import game.LevelEngine;
+import game.LevelFunctionality;
 
 @SuppressWarnings("serial")
 public class SecondaryMenu extends JPanel {
@@ -55,7 +60,9 @@ public class SecondaryMenu extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Level level = new Level();
+				GameFactory gf = new Game1Factory();
+				ArrayList<Level> levels = gf.create();
+				Game1View level = new Game1View(levels);
 				LevelEngine levelEngine = new LevelEngine(level);
 				
 				PanelManager.changePanel(wrapper, level);
