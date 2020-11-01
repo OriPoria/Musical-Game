@@ -11,8 +11,7 @@ public class LevelEngine {
 	}
 	public void run() {
 		while (true) {
-				levels.get(0).repaint();
-			
+				levels.get(0).repaint();			
 		}
 	}
 	

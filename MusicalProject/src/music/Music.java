@@ -6,7 +6,7 @@ import java.io.File;
 
 public class Music {
 
-    public static void playMusic(int c) {
+    public static Clip playMusic(int c) {
 
         try {
             Clip clip = AudioSystem.getClip();
@@ -60,14 +60,14 @@ public class Music {
             }).start();
 
 
-
+            return clip;
 
 
         } catch (Exception e) {
             System.out.println(e);
         }
 
-
+        return null;
 
 
 

@@ -8,4 +8,7 @@ public interface Level {
 	 */
 	public void drawLevel(Graphics g);
 	public void setSizeRec(int x1, int y1, int x2, int y2, int h);
+	public boolean isEnd();
+	public int getAnswer();
+	public void restartLevel();
 }
