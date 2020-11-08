@@ -62,10 +62,15 @@ public class SecondaryMenu extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				GameFactory gf = new Game1Factory();
 				ArrayList<Level> levels = gf.create();
-				Game1View level = new Game1View(levels);
-				LevelEngine levelEngine = new LevelEngine(level);
+				LevelEngine levelEngine = new LevelEngine();
+
 				
-				PanelManager.changePanel(wrapper, level);
+				GameAnimation levelAnimation = new Game1View(levels, levelEngine);
+				
+				levelEngine.addAnimation(levelAnimation);
+				
+				
+				PanelManager.changePanel(wrapper, levelAnimation);
 				new Thread() {
 					@Override
 					public void run() {

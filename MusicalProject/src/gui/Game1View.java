@@ -13,41 +13,83 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import buttons.ContinueAnimationActionListener;
+import buttons.ContinueAnimationButton;
+import buttons.DetailsChanger;
 import game.Level;
+import game.LevelEngine;
 import game.LevelFunctionality;
 
 @SuppressWarnings("serial")
-public class Game1View extends JPanel {
+public class Game1View extends GameAnimation {
 	private int startX;
 	private int startY;
 	private int startHeight;
 	private ArrayList<Level> levels;
 	private int levelPtr = 0;
-	private JButton similar;
-	private JButton different;
-	private JButton relisten;
-	private int score = 0;
-	private boolean endDrawing = false;
-	public Game1View(ArrayList<Level> g) {
-		super(new GridBagLayout());
+	private boolean lock = true;
+	
+	
+	//each game has its own response logic
+	private ResponseLevelPanel responsePanel = new ResponseLevelPanel();
+	
+		
+	public Game1View(ArrayList<Level> g, LevelEngine le) {
+		super(new GridBagLayout(), le);
 		levels = g;
 		setBackground(Color.gray);
 		setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.black));
-		similar = new JButton("similar");
-		different = new JButton("different");
-		relisten = new JButton("relisten");
-		resetView();
-		setButtons();
-		add(similar);
-		add(different);
-		add(relisten);
-		similar.setVisible(false);
-		different.setVisible(false);
-		relisten.setVisible(false);
+		responsePanelSetup();
+
+		isRunning = true;
 	}
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		updateScreen(g);
+		if (!levels.get(levelPtr).isEnd()) {
+			levels.get(levelPtr).drawLevel(g);
+			if (lock) {
+				//TODO: next need to inject the runnable
+				new Thread() {
+					@Override
+					public void run() {
+						while (!levels.get(levelPtr).isEnd()) {
+							levels.get(levelPtr).playMusic();		
+						}
+					
+				}
+				}.start();
+				lock = false;
+				}
+		}
+		
+		
+		//TODO: need to notify
+		else if (levels.get(levelPtr).isEnd()) {
+		
+			//block the animation
+			isRunning = false;
+			responsePanel.setAnswer(levels.get(levelPtr).getAnswer());
+			System.out.println("before change to respone");
+//			Game1View game1View = this;
+//			continueButton.addActionListener(new ActionListener() {
+//				
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					PanelManager.changePanel(questionPanel, game1View);
+//					
+//				}
+//			});
+			resetGame();
+			PanelManager.changePanel(this, responsePanel);
+		}
+
+
+
+		
+	}
+	public void updateScreen(Graphics g) {
 		g.setColor(Color.black);
 		startX = getX();
 		startY = getY();
@@ -55,75 +97,37 @@ public class Game1View extends JPanel {
 		
 		startHeight = getHeight();
 	
-		g.drawString("score: " + score, startX+ 30, startY +30);
+		g.drawString("score: " + getScoreToDraw(), startX+ 30, startY +30);
 		g.drawRect(startX + width/10, startY + startHeight/10 ,(3*width)/10, (3*startHeight)/4);
 		g.drawRect(startX + (6*width)/10, startY + startHeight/10 ,(3*width)/10, (3*startHeight)/4);
 
 
 		levels.get(levelPtr).setSizeRec(startX + width/10, startY + startHeight/10,
 				startX + (6*width)/10, startY + startHeight/10,  (3*startHeight)/4);
-		if (!levels.get(levelPtr).isEnd()) {
-			levels.get(levelPtr).drawLevel(g);		
-			
-		} else {
-			endDrawing = true;
-			similar.setVisible(true);
-			different.setVisible(true);
-			relisten.setVisible(true);
-		}
-
-
-		
 	}
-	public void setButtons() {
-		relisten.addActionListener(new ActionListener() {
+	
+	private void responsePanelSetup() {
+		responsePanel.setAnimationContext(this);
+		responsePanel.setGameDetails(gameDetails);
+		responsePanel.addAllButtonsAction(new ContinueAnimationActionListener(levelEngine));
+		Game1View game1View = this;
+		responsePanel.addAllButtonsAction(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				score--;
-				levels.get(levelPtr).restartLevel();
+				PanelManager.changePanel(responsePanel, game1View);
 				
 			}
 		});
-		if (levels.get(levelPtr).getAnswer() == LevelFunctionality.SIMILAR) {
-			similar.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					score++;
-				}
-			});
-		} else if (levels.get(levelPtr).getAnswer() == LevelFunctionality.DIFFERENT) {
-			different.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					score++;					
-				}
-			});
-		}
-		ActionListener al = new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (levelPtr < levels.size()-1)
-					levelPtr++;	
-				
-				resetView();
-			}
-		};
-		similar.addActionListener(al);
-		different.addActionListener(al);
-		relisten.addActionListener(al);
-		
 	}
-	public boolean isEndDrawing() {
-		return endDrawing;
+
+
+	@Override
+	public void resetGame() {
+		isRunning = true;
+		levelPtr++;
+		lock = true;
+
 	}
-	private void resetView() {
-		endDrawing = false;
-		similar.setVisible(false);
-		different.setVisible(false);
-		relisten.setVisible(false);
-	}
+
 }

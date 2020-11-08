@@ -22,13 +22,16 @@ public class LevelFunctionality implements Level {
 	private String name;
 	
 	private Clip clip;
+	private Note note;
+	
 	
 	private boolean isEndLevel = false;
 	private int answer;
+	private boolean breakBetweenSections = false;
 	
-
-	private int lastSuspension = 0;
 	
+	
+	private int startXposition;
 	private int startXfirstRec;
 	private int startYfirstRec;
 	private int startXSecRec;
@@ -38,47 +41,74 @@ public class LevelFunctionality implements Level {
 		name = s;
 	}
 	@Override
-	public void drawLevel(Graphics g) {
-		suspend(lastSuspension);
+	public void playMusic() {
 		if (notesPointer == secondSectionSize && !isFirstSection) {
-			resetLevel();
 			suspend(300);
+			breakBetweenSections = true;
+			clip.drain();
+			resetLevel();
 			clip.close();
 			return;
 		}
-		Note note = getNote(notesPointer);
+
+		
+		int soundLength = getNote(notesPointer).getRythm();
+		setStartX();
+		XpositionGaps += soundLength/10; 
+		try {
+			clip = Music.playMusic(getNote(notesPointer).getSound());
+			suspend(soundLength);
+
+		} catch (Exception e) {
+			return;
+		}
+		notesPointer++;
+
+		if (notesPointer == firstSectionSize && isFirstSection) {
+			notesPointer = 0;
+			isFirstSection = false;
+			XpositionGaps = 0;
+			setBreak();
+		}
+
+		
+	}
+	
+	private void setStartX() {
+		if (isFirstSection) {
+			startXposition = startXfirstRec + XpositionGaps;
+		} else {
+			startXposition = startXSecRec + XpositionGaps;
+		}
+	}
+	private void setBreak() {
+		breakBetweenSections = true;
+		suspend(1000);
+		breakBetweenSections = false;
+
+	}
+	
+	
+	@Override
+	public void drawLevel(Graphics g) {
+
+		try {
+			note = getNote(notesPointer);	
+		} catch (Exception e) {
+		}
+		
 		g.setColor(note.getColor());
 		
 
 		int height = note.getSound();
 		height = 8 - height;
-		int startXposition = 0;
-		if (isFirstSection) {
-			startXposition = startXfirstRec + XpositionGaps;
-			
-		} else {
-			startXposition = startXSecRec + XpositionGaps;
-		}	
-		XpositionGaps = XpositionGaps+(note.getRythm()/10);
-
-		g.fillRect(startXposition, startYfirstRec + (height*startHeight)/8, note.getRythm()/10 , startHeight/8);
-
-		if (notesPointer == 0 && !isFirstSection) {
-			suspend(1000);
-		}
-
-		clip = Music.playMusic(note.getSound());
-		
-		lastSuspension = note.getRythm();
-
-		notesPointer++;
-		if (notesPointer == firstSectionSize && isFirstSection) {
-			notesPointer = 0;
-			isFirstSection = false;
-			XpositionGaps = 0;
-		}
 		
 
+		if (!breakBetweenSections) {
+			g.fillRect(startXposition, startYfirstRec + (height*startHeight)/8, note.getRythm()/10 , startHeight/8);	
+		}
+		
+		
 	}
 	/**
 	 * @param x1 the x position of the start of the first rectangle
@@ -106,7 +136,7 @@ public class LevelFunctionality implements Level {
 			return firstSection.get(ptr);
 		else {
 			return secondSection.get(ptr);
-		}
+		}	
 	}
 	@Override
 	public boolean isEnd() {
@@ -118,7 +148,8 @@ public class LevelFunctionality implements Level {
 			Thread.sleep(s);
 		} catch (Exception e) {
 			// TODO: handle exception
-		}
+		}		
+
 	}
 	private void resetLevel() {
 		notesPointer = 0;
@@ -135,6 +166,7 @@ public class LevelFunctionality implements Level {
 	}
 	@Override
 	public void restartLevel() {
+		resetLevel();
 		isEndLevel = false;
 	}
 	
