@@ -7,12 +7,12 @@ import java.sql.Statement;
 
 public class Database {
 
-	public static void createTable() throws Exception {
+	public static void createTable() {
 		try {
 			Connection conn = getConnection();
 			PreparedStatement create = conn.prepareStatement("CREATE TABLE scoretable(id int NOT NULL AUTO_INCREMENT, name varchar(255), score int, PRIMARY KEY(id))");
 			create.executeUpdate();
-			
+			conn.close();
 			
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -26,6 +26,7 @@ public class Database {
 			Connection conn = getConnection();
 			PreparedStatement posted = conn.prepareStatement("INSERT INTO scoretable (name, score) VALUES ('"+name+"', '"+score+"')");
 			posted.executeUpdate();
+			conn.close();
 			
 		} catch (Exception e) {
 			System.out.println(e);
@@ -47,12 +48,13 @@ public class Database {
 			User user = new User();
 			user.setName(str1);
 			user.setTopScore(id);
+			conn.close();
 			return user;
 			
 
 		} catch (Exception e) {
 			System.out.println(e);
-			System.out.println("name is not in the table");
+			System.out.println("Name is not in the table");
 			return null;
 
 		} finally {
@@ -62,7 +64,6 @@ public class Database {
 	
 	
 	 public static Connection getConnection() throws Exception{
-	  try{
 	   String driver = "com.mysql.jdbc.Driver";
 	   String url = "jdbc:mysql://localhost:3306/testdb";
 	   String username = "root";
@@ -72,9 +73,7 @@ public class Database {
 	   Connection conn = DriverManager.getConnection(url,username,password);
 	   System.out.println("Connected");
 	   return conn;
-	  } catch(Exception e){System.out.println(e);}
 	  
 	  
-	  return null;
 	 }
 }

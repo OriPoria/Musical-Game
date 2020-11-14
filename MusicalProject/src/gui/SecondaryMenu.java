@@ -24,21 +24,18 @@ import game.LevelEngine;
 import game.LevelFunctionality;
 
 @SuppressWarnings("serial")
-public class SecondaryMenu extends JPanel {
+public class SecondaryMenu extends GameJPanel {
 	private User user;
 
 	public SecondaryMenu () {
 		super(new GridBagLayout());
-		
-		setBackground(Color.gray);
-		setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.black));
 	}
 	public void setUser(User u) {
 		user = u;
 		setPage();
 
 	}
-	public void setPage() {
+	private void setPage() {
 		JLabel welcome = new JLabel("Welcome "+user.getName());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
@@ -55,28 +52,12 @@ public class SecondaryMenu extends JPanel {
 		c.gridy = 2;
 		c.anchor = GridBagConstraints.PAGE_END;
 		JButton button = new JButton("start a game!");
-		JPanel wrapper = this;
+		GameJPanel wrapper = this;
 		button.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GameFactory gf = new Game1Factory();
-				ArrayList<Level> levels = gf.create();
-				LevelEngine levelEngine = new LevelEngine();
-
-				
-				GameAnimation levelAnimation = new Game1View(levels, levelEngine);
-				
-				levelEngine.addAnimation(levelAnimation);
-				
-				
-				PanelManager.changePanel(wrapper, levelAnimation);
-				new Thread() {
-					@Override
-					public void run() {
-						levelEngine.run();
-					}
-				}.start();
+				wrapper.changePanel(new InstructionsPanel());
 			}
 		});
 		add(button, c);

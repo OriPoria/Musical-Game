@@ -13,7 +13,8 @@ import game.GameDetails;
 import game.LevelEngine;
 import game.MyGameDetails;
 
-public abstract class GameAnimation extends JPanel {
+@SuppressWarnings("serial")
+public abstract class GameAnimation extends GameJPanel {
 	protected boolean isRunning;
 	protected GameDetails gameDetails;
 	protected LevelEngine levelEngine;

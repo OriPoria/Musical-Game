@@ -46,8 +46,8 @@ public class LevelFunctionality implements Level {
 			suspend(300);
 			breakBetweenSections = true;
 			clip.drain();
-			resetLevel();
 			clip.close();
+			resetLevel();
 			return;
 		}
 
@@ -60,6 +60,7 @@ public class LevelFunctionality implements Level {
 			suspend(soundLength);
 
 		} catch (Exception e) {
+			System.err.println(e);
 			return;
 		}
 		notesPointer++;
@@ -147,7 +148,7 @@ public class LevelFunctionality implements Level {
 		try {
 			Thread.sleep(s);
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.err.println(e);
 		}		
 
 	}

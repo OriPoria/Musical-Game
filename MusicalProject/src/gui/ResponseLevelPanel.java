@@ -1,16 +1,14 @@
 package gui;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
-
 import buttons.DetailsChanger;
 import game.GameDetails;
 import game.LevelFunctionality;
 
-public class ResponseLevelPanel extends JPanel {
+@SuppressWarnings("serial")
+public class ResponseLevelPanel extends GameJPanel {
 	
 	private JButton similar;
 	private JButton different;

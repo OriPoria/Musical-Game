@@ -22,6 +22,7 @@ public class LevelEngine {
 
 			}
 			try {
+				notifyAll();
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();

@@ -28,6 +28,7 @@ public class Game1View extends GameAnimation {
 	private ArrayList<Level> levels;
 	private int levelPtr = 0;
 	private boolean lock = true;
+	private Thread musicPlayerThread;
 	
 	
 	//each game has its own response logic
@@ -37,8 +38,7 @@ public class Game1View extends GameAnimation {
 	public Game1View(ArrayList<Level> g, LevelEngine le) {
 		super(new GridBagLayout(), le);
 		levels = g;
-		setBackground(Color.gray);
-		setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.black));
+
 		responsePanelSetup();
 
 		isRunning = true;
@@ -49,19 +49,27 @@ public class Game1View extends GameAnimation {
 		updateScreen(g);
 		if (!levels.get(levelPtr).isEnd()) {
 			levels.get(levelPtr).drawLevel(g);
+			
 			if (lock) {
+				lock = false;
+				
 				//TODO: next need to inject the runnable
-				new Thread() {
+				musicPlayerThread = new Thread() {
+					private int counterPlay = 0;
 					@Override
 					public void run() {
 						while (!levels.get(levelPtr).isEnd()) {
-							levels.get(levelPtr).playMusic();		
+							levels.get(levelPtr).playMusic();	
+							counterPlay++;
+							System.out.println("counter player: " + counterPlay);
 						}
 					
 				}
-				}.start();
-				lock = false;
-				}
+				};
+				musicPlayerThread.start();
+			}
+			
+			
 		}
 		
 		
@@ -70,19 +78,15 @@ public class Game1View extends GameAnimation {
 		
 			//block the animation
 			isRunning = false;
+			
+	//		//TODO: avoid busy waiting
+	//		while (musicPlayerThread.isAlive());
 			responsePanel.setAnswer(levels.get(levelPtr).getAnswer());
-			System.out.println("before change to respone");
-//			Game1View game1View = this;
-//			continueButton.addActionListener(new ActionListener() {
-//				
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					PanelManager.changePanel(questionPanel, game1View);
-//					
-//				}
-//			});
+
+			//prepare for the next level
 			resetGame();
-			PanelManager.changePanel(this, responsePanel);
+			
+			changePanel(responsePanel);
 		}
 
 

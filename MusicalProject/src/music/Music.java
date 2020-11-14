@@ -54,10 +54,7 @@ public class Music {
 
                 	
             }
-            new Thread(()->{
-					clip.start();
-				
-            }).start();
+            clip.start();
 
 
             return clip;
