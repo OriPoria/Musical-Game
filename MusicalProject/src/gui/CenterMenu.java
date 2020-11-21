@@ -41,7 +41,7 @@ public class CenterMenu extends JPanel {
 		wrapper = w;
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		setBackground(Color.gray);
+		setBackground(null);
 		userNameField = new HintTextField("username", 15);
 		userNameField.addKeyListener(new KeyAdapter() {
 	        @Override

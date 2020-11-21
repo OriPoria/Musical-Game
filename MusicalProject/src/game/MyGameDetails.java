@@ -1,6 +1,8 @@
 package game;
 
-public class MyGameDetails implements GameDetails{
+import observer.*;
+
+public class MyGameDetails extends GameDetails{
 
 	private int score = 0;
 	@Override
@@ -11,7 +13,7 @@ public class MyGameDetails implements GameDetails{
 	@Override
 	public void setScore(int score) {
 		this.score = score;
-		System.out.println("set new score: " + score);
+		notifyObservers();
 		
 	}
 

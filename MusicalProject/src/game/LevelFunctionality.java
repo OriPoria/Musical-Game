@@ -58,6 +58,7 @@ public class LevelFunctionality implements Level {
 		try {
 			clip = Music.playMusic(getNote(notesPointer).getSound());
 			suspend(soundLength);
+			clip.close();
 
 		} catch (Exception e) {
 			System.err.println(e);

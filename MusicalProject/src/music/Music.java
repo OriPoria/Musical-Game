@@ -11,6 +11,12 @@ public class Music {
         try {
             Clip clip = AudioSystem.getClip();
             switch (c) {
+            	case 0: 
+            		File IS0 = new File("src\\sounds\\empty.wav");
+            	    AudioInputStream ES = AudioSystem.getAudioInputStream(IS0);
+                    clip.open(ES);
+                    break;
+                	
                 case 1:
                     File IS1 = new File("src\\sounds\\Do1.wav");
                     AudioInputStream Do1 = AudioSystem.getAudioInputStream(IS1);

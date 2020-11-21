@@ -22,6 +22,8 @@ import game.Game1Factory;
 import game.GameFactory;
 import game.LevelEngine;
 import game.LevelFunctionality;
+import util.Fonts;
+import util.Strings;
 
 @SuppressWarnings("serial")
 public class SecondaryMenu extends GameJPanel {
@@ -36,19 +38,27 @@ public class SecondaryMenu extends GameJPanel {
 
 	}
 	private void setPage() {
-		JLabel welcome = new JLabel("Welcome "+user.getName());
-        GridBagConstraints c = new GridBagConstraints();
+		JLabel welcome = new JLabel();
+		if (user.getName() != null) {
+			welcome.setText("Welcome "+user.getName());
+		} else {
+			welcome.setText(Strings.generalWelcome);
+		}
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 0;
 		c.weighty = 1;
-		welcome.setFont(new Font("David", Font.BOLD, 40));
+		welcome.setFont(Fonts.title);
 		welcome.setForeground(Color.white);
 		add(welcome,c);
-		welcome = new JLabel("your top score is " + user.getTopScore());
-		welcome.setFont(new Font("David", Font.BOLD, 25));
-		welcome.setForeground(Color.white);
-		c.gridy = 1;
-		add(welcome,c);
+		if (user.getName() != null) {
+			JLabel subwelcome = new JLabel("your top score is " + user.getTopScore());
+			subwelcome .setFont(new Font("David", Font.BOLD, 25));
+			subwelcome .setForeground(Color.white);
+			c.gridy = 1;
+			add(subwelcome ,c);
+		}
+
 		c.gridy = 2;
 		c.anchor = GridBagConstraints.PAGE_END;
 		JButton button = new JButton("start a game!");

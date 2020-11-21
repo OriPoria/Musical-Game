@@ -13,12 +13,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import actions.DetailsChanger;
 import buttons.ContinueAnimationActionListener;
 import buttons.ContinueAnimationButton;
-import buttons.DetailsChanger;
 import game.Level;
 import game.LevelEngine;
 import game.LevelFunctionality;
+import util.Fonts;
 
 @SuppressWarnings("serial")
 public class Game1View extends GameAnimation {
@@ -26,6 +27,7 @@ public class Game1View extends GameAnimation {
 	private int startY;
 	private int startHeight;
 	private ArrayList<Level> levels;
+	private int numberLevels;
 	private int levelPtr = 0;
 	private boolean lock = true;
 	private Thread musicPlayerThread;
@@ -38,6 +40,7 @@ public class Game1View extends GameAnimation {
 	public Game1View(ArrayList<Level> g, LevelEngine le) {
 		super(new GridBagLayout(), le);
 		levels = g;
+		numberLevels = levels.size();
 
 		responsePanelSetup();
 
@@ -61,7 +64,6 @@ public class Game1View extends GameAnimation {
 						while (!levels.get(levelPtr).isEnd()) {
 							levels.get(levelPtr).playMusic();	
 							counterPlay++;
-							System.out.println("counter player: " + counterPlay);
 						}
 					
 				}
@@ -73,14 +75,12 @@ public class Game1View extends GameAnimation {
 		}
 		
 		
-		//TODO: need to notify
 		else if (levels.get(levelPtr).isEnd()) {
 		
 			//block the animation
 			isRunning = false;
 			
-	//		//TODO: avoid busy waiting
-	//		while (musicPlayerThread.isAlive());
+
 			responsePanel.setAnswer(levels.get(levelPtr).getAnswer());
 
 			//prepare for the next level
@@ -101,7 +101,8 @@ public class Game1View extends GameAnimation {
 		
 		startHeight = getHeight();
 	
-		g.drawString("score: " + getScoreToDraw(), startX+ 30, startY +30);
+		g.setFont(Fonts.result);
+		g.drawString("score: " + getScoreToDraw(), startX+ 30, startY +35);
 		g.drawRect(startX + width/10, startY + startHeight/10 ,(3*width)/10, (3*startHeight)/4);
 		g.drawRect(startX + (6*width)/10, startY + startHeight/10 ,(3*width)/10, (3*startHeight)/4);
 
@@ -113,14 +114,14 @@ public class Game1View extends GameAnimation {
 	private void responsePanelSetup() {
 		responsePanel.setAnimationContext(this);
 		responsePanel.setGameDetails(gameDetails);
-		responsePanel.addAllButtonsAction(new ContinueAnimationActionListener(levelEngine));
+		responsePanel.continueAnimationAction(new ContinueAnimationActionListener(levelEngine));
 		Game1View game1View = this;
-		responsePanel.addAllButtonsAction(new ActionListener() {
+		responsePanel.continueAnimationAction(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PanelManager.changePanel(responsePanel, game1View);
-				
+				//PanelManager.changePanel(responsePanel, game1View);
+				responsePanel.changePanel(game1View);
 			}
 		});
 	}
@@ -131,6 +132,10 @@ public class Game1View extends GameAnimation {
 		isRunning = true;
 		levelPtr++;
 		lock = true;
+		
+		if (levelPtr == numberLevels) {
+			responsePanel.setForFinishLevel();
+		}
 
 	}
 
