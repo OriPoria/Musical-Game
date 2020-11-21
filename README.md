@@ -7,5 +7,6 @@ can help him to decide.
 ## Programming tools
 - AWT and Swing of java for creating the gui and components
 - OOP design patterns
+- javax sound
 - multi-threading for the animation
 
