@@ -115,6 +115,7 @@ public class ResponseLevelPanel extends GameJPanel {
 		});
 		
 	}
+	
 	private void setButtonsInvisible() {
 		SetButtonInvisibe setButtonInvisibe = new SetButtonInvisibe(buttons);
 		similar.addActionListener(setButtonInvisibe);
@@ -122,6 +123,7 @@ public class ResponseLevelPanel extends GameJPanel {
 		correctShowResult = new ShowResult(result, Strings.correctAnswer);
 		wrongShowResult = new ShowResult(result, Strings.wrongAnswer);
 	}
+	
 	private void removeListeners() {
 		for (JButton btn: buttons) {
 			btn.removeActionListener(correctShowResult);
