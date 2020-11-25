@@ -67,9 +67,11 @@ public class ResponseLevelPanel extends GameJPanel {
 		setButtonsInvisible();
 		
 	}
+	
 	public void setAnimationContext(GameAnimation ga) {
 		gameAnimation = ga;
 	}
+	
 	public void setGameDetails(GameDetails gd) {
 		gameDetails = gd;
 		detailsChanger = new DetailsChanger(gameDetails);
