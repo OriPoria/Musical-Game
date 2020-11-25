@@ -8,5 +8,6 @@ public class Strings {
 	public static String correctAnswer = "Correct!";
 	public static String wrongAnswer = "Wrong answer";
 	public static String generalWelcome = "Hello player";
+	public static String endLevelButton = "End level";
 
 }

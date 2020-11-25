@@ -5,9 +5,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.SwingUtilities;
 
-import database.Database;
 import gui.GUI;
-import music.Player;
 public class Main {
 	public static void main(String [] args) {
 		doSomework();
