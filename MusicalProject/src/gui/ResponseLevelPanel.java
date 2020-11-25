@@ -31,10 +31,10 @@ public class ResponseLevelPanel extends GameJPanel {
 	private JPanel bottomJPanel; 
 	private GameAnimation gameAnimation;
 	private GameDetails gameDetails;
-	ArrayList<JButton> buttons = new ArrayList<JButton>();
 	private ShowResult correctShowResult;
 	private ShowResult wrongShowResult;
 	private DetailsChanger detailsChanger;
+	ArrayList<JButton> buttons = new ArrayList<JButton>();
 
 	public ResponseLevelPanel() {
 		super(new GridLayout(5,1));
