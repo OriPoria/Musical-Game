@@ -34,7 +34,7 @@ public class ResponseLevelPanel extends GameJPanel {
 	private ShowResult correctShowResult;
 	private ShowResult wrongShowResult;
 	private DetailsChanger detailsChanger;
-	 ArrayList<JButton> buttons = new ArrayList<JButton>();
+	ArrayList<JButton> buttons = new ArrayList<JButton>();
 
 	public ResponseLevelPanel() {
 		super(new GridLayout(5,1));
