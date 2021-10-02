@@ -23,7 +23,7 @@ public abstract class GameJPanel extends JPanel {
 		setBackground();
 	}
 	private void setBackground() {
-		setBackground(Color.gray);
+		setBackground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.black));
 		
 	}

@@ -1,5 +1,8 @@
 package database;
 import java.sql.Connection;
+import java.io.File;  
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +18,7 @@ public class Database {
 			conn.close();
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("Couldn't create table");
 		} finally {
 			System.out.println("Function complete");
 		}
@@ -64,10 +67,23 @@ public class Database {
 	
 	
 	 public static Connection getConnection() throws Exception{
-	   String driver = "com.mysql.jdbc.Driver";
-	   String url = "jdbc:mysql://localhost:3306/testdb";
-	   String username = "root";
-	   String password = "ELal2427";
+		 String currentPath = new java.io.File(".").getCanonicalPath();
+		 File secrectData = new File("src/database/dbdetails.txt");
+		 boolean b = secrectData.exists();
+		 Scanner myReader = new Scanner(secrectData);
+	      String[] lines = new String[4];
+	      int i = 0;
+	      while (myReader.hasNextLine()) {
+	        String data = myReader.nextLine();
+	        System.out.println(data);
+	        lines[i] = data;
+	        i++;
+	      }
+	      myReader.close();		 
+	   String driver = lines[0];
+	   String url = lines[1];
+	   String username = lines[2];
+	   String password = lines[3];
 	   Class.forName(driver);
 	   
 	   Connection conn = DriverManager.getConnection(url,username,password);
