@@ -12,8 +12,6 @@ public class DetailsChanger implements ActionListener {
 	
 	public DetailsChanger(GameDetails gd) {
 		details = gd;
-
-
 	}
 	
 	@Override
