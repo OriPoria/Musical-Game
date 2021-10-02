@@ -16,10 +16,7 @@ public class DetailsChanger implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		details.setScore(details.getScore()+1);
-
-		
 	}
 
 }
