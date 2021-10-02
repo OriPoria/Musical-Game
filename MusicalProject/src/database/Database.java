@@ -16,7 +16,6 @@ public class Database {
 			PreparedStatement create = conn.prepareStatement("CREATE TABLE scoretable(id int NOT NULL AUTO_INCREMENT, name varchar(255), score int, PRIMARY KEY(id))");
 			create.executeUpdate();
 			conn.close();
-			
 		} catch (Exception e) {
 			System.out.println("Couldn't create table");
 		} finally {
