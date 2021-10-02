@@ -28,6 +28,8 @@ public class Main {
             AudioInputStream Do1 = AudioSystem.getAudioInputStream(IS1);
             clip.open(Do1);
             clip.start();
-        } catch (Exception E) {}
+        } catch (Exception e) {
+        	
+        }
 	}
 }
