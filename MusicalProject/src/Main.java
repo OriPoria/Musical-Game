@@ -19,6 +19,7 @@ public class Main {
         });
 	}
 	
+	
 	//Empty sound to open the file with the sounds
 	public static void doSomework() {
         try {
